@@ -1,0 +1,58 @@
+<%page expression_filter="h"/>
+<%inherit file="main.html" />
+<%namespace name='static' file='static_content.html'/>
+<%!
+from django.utils.translation import ugettext as _
+from django.urls import reverse
+
+from openedx.core.djangolib.markup import HTML, Text
+%>
+
+
+
+
+
+<main id="main" aria-label="Content" tabindex="-1">
+    <div id="content-container" class="login-register-content" style="background: url(https://gitcdn.link/cdn/suprgyabhushan/my-style-theme/e23e08beecb760ffa703e1c4faffdacc52ae68b5/lms/static/images/46124818862_2dd69a10f7_b.jpg) no-repeat; position:absolute; right:100px; height:500px; width:1200px;">
+            % if enable_enterprise_sidebar:
+                <%include file="student_account/enterprise_sidebar.html" />
+                <%
+                    border_class = 'border-left'
+                %>
+            % else:
+                <%
+                    border_class = ''
+                %>
+            % endif
+            <div id="login-and-registration-container" class="login-register ${border_class}" style="position:absolute; height: 500px; width: 150px; right: 1px; top: 40px; text-align:center;"></div>
+        </div>
+
+</main>
+% if show_homepage_promo_video:
+  <section id="video-modal" class="modal home-page-video-modal video-modal">
+    <div class="inner-wrapper">
+      <iframe title="YouTube Video" width="640" height="360" src="//www.youtube.com/embed/${homepage_promo_video_youtube_id}?showinfo=0" frameborder="0" allowfullscreen></iframe>
+    </div>
+  </section>
+% endif
+
+
+
+<%block name="js_extra">
+   <script type="text/javascript">
+      $(window).load(function() {
+         if(getParameterByName('next')) {
+              $('#login').trigger("click");
+         }
+      })
+   </script>
+</%block>
+
+% if show_signup_immediately is not UNDEFINED:
+  ## NOTE: This won't work in production, because anonymous views are cached, so it will
+  ## show either with or without this extra js for 3 minutes at a time.
+<script type="text/javascript">
+  $(window).load(function() {$('#signup_action').trigger("click");});
+</script>
+% endif
+                 
